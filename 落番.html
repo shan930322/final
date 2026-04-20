@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>落番 Luò Fān ─ 金門下南洋生存記</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#060202;--bg2:#0e0505;--bg3:#180808;
+  --bdr:#3a1208;--bdr2:#6a2010;
+  --tx:#c4b090;--td:#4a2a16;--tb:#e4d0b0;
+  --red:#8c1a1a;--rl:#c03030;--rll:#e04040;
+  --gold:#8a6020;--gl:#b08030;--gll:#d0a840;
+  --navy:#04080e;--sea:#060e18;
+  --font:"Noto Serif TC","STSong","SimSun",serif;
+  --tile: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='80' height='80' fill='%230a0302'/><rect x='2' y='2' width='76' height='76' fill='none' stroke='%234a1208' stroke-width='1.2'/><rect x='6' y='6' width='68' height='68' fill='none' stroke='%23380e06' stroke-width='0.6'/><polygon points='40,8 72,40 40,72 8,40' fill='none' stroke='%235a1a08' stroke-width='1'/><circle cx='40' cy='40' r='14' fill='%231e0606'/><circle cx='40' cy='40' r='9' fill='none' stroke='%238a4818' stroke-width='0.8'/><circle cx='40' cy='40' r='4' fill='%238a5018'/><ellipse cx='40' cy='24' rx='3.5' ry='6.5' fill='%236a1808'/><ellipse cx='40' cy='56' rx='3.5' ry='6.5' fill='%236a1808'/><ellipse cx='24' cy='40' rx='6.5' ry='3.5' fill='%236a1808'/><ellipse cx='56' cy='40' rx='6.5' ry='3.5' fill='%236a1808'/><ellipse cx='29.4' cy='29.4' rx='3' ry='5.5' fill='%235a1408' transform='rotate(45 29.4 29.4)'/><ellipse cx='50.6' cy='29.4' rx='3' ry='5.5' fill='%235a1408' transform='rotate(-45 50.6 29.4)'/><ellipse cx='29.4' cy='50.6' rx='3' ry='5.5' fill='%235a1408' transform='rotate(-45 29.4 50.6)'/><ellipse cx='50.6' cy='50.6' rx='3' ry='5.5' fill='%235a1408' transform='rotate(45 50.6 50.6)'/><circle cx='12' cy='12' r='3' fill='%234a1208'/><circle cx='68' cy='12' r='3' fill='%234a1208'/><circle cx='12' cy='68' r='3' fill='%234a1208'/><circle cx='68' cy='68' r='3' fill='%234a1208'/></svg>");
+}
+html,body{min-height:100%;background:var(--bg);color:var(--tx);font-family:var(--font);line-height:1.95;overflow-x:hidden;}
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;}
+.screen.active{display:block;}
+/* ── TILE BORDERS ── */
+.tile-band{
+  height:80px;
+  background-image:var(--tile);
+  background-size:80px 80px;
+  background-repeat:repeat-x;
+  opacity:.55;
+}
+.tile-band-sm{height:48px;background-image:var(--tile);background-size:48px 48px;background-repeat:repeat-x;opacity:.45;}
+/* ── VIGNETTE ── */
+.vignette{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at center,transparent 38%,rgba(0,0,0,.72) 100%);}
+/* ── LANDING ── */
+#screen-intro{background:var(--bg);}
+.intro-inner{max-width:760px;margin:0 auto;padding:0 1.2rem 3rem;}
+.game-title-wrap{text-align:center;padding:2rem 1rem 1.5rem;}
+.game-eyebrow{font-size:.7rem;letter-spacing:.35em;color:var(--td);text-transform:uppercase;margin-bottom:.5rem;}
+.game-title-zh{font-size:clamp(2.4rem,7vw,4rem);font-weight:700;color:var(--tb);letter-spacing:.18em;line-height:1.1;}
+.game-title-py{font-size:.95rem;letter-spacing:.3em;color:var(--gold);margin:.3rem 0 .6rem;font-style:italic;}
+.game-tagline{font-size:.85rem;color:var(--rl);letter-spacing:.15em;}
+/* ── MAP ── */
+.map-wrap{
+  border:1px solid var(--bdr);
+  background:var(--navy);
+  margin:1.2rem 0;
+  position:relative;
+  overflow:hidden;
+}
+.map-wrap svg{display:block;width:100%;height:auto;}
+/* ── PROVERB BOX ── */
+.proverb-wrap{
+  border:1px solid var(--bdr);
+  background:var(--bg2);
+  padding:1.2rem 1.5rem;
+  margin:1.2rem 0;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.proverb-wrap::before,.proverb-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:48px;
+  background-image:var(--tile);background-size:48px 48px;opacity:.35;
+}
+.proverb-wrap::before{left:0;}
+.proverb-wrap::after{right:0;}
+.proverb-main{font-size:1.15rem;letter-spacing:.22em;color:var(--tb);margin-bottom:.9rem;}
+.proverb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;padding:0 60px;}
+.pg-item{text-align:center;}
+.pg-num{font-size:1.1rem;font-weight:700;}
+.pg-label{font-size:.72rem;color:var(--td);margin-top:.15rem;}
+.pg-death{color:var(--rl);}
+.pg-stay{color:var(--gl);}
+.pg-ret{color:#60a858;}
+/* ── HISTORY TEXT ── */
+.history-text{font-size:.88rem;line-height:2.05;color:var(--tx);margin:1.2rem 0;}
+.history-text p{margin-bottom:.85rem;}
+.history-text em{color:var(--gl);font-style:normal;}
+/* ── DIVIDER ── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr2),transparent);margin:1.2rem 0;opacity:.6;}
+/* ── BUTTONS ── */
+.btn-start{
+  display:block;width:100%;
+  background:transparent;border:1px solid var(--gl);
+  color:var(--gl);font-family:var(--font);font-size:.9rem;
+  letter-spacing:.25em;padding:1rem 2rem;
+  cursor:pointer;transition:all .35s;margin-top:1rem;
+}
+.btn-start:hover{background:var(--red);border-color:var(--rl);color:var(--tb);box-shadow:0 0 28px rgba(140,26,26,.5);}
+.btn-choice{
+  display:flex;gap:.85rem;align-items:flex-start;
+  width:100%;background:transparent;
+  border:1px solid var(--bdr);color:var(--tx);
+  font-family:var(--font);font-size:.87rem;line-height:1.85;
+  padding:1rem 1.2rem;text-align:left;cursor:pointer;
+  transition:all .28s;margin-bottom:.65rem;
+}
+.btn-choice:hover{border-color:var(--rl);background:rgba(140,26,26,.1);color:var(--tb);}
+.btn-choice:hover .choice-key{color:var(--rl);}
+.choice-key{color:var(--gl);font-weight:700;font-size:.8rem;flex-shrink:0;margin-top:.15rem;transition:color .25s;}
+.choice-sub{color:var(--td);font-size:.8rem;display:block;margin-top:.2rem;}
+.btn-restart{
+  display:block;width:100%;background:transparent;
+  border:1px solid var(--td);color:var(--td);
+  font-family:var(--font);font-size:.82rem;
+  letter-spacing:.2em;padding:.9rem;
+  cursor:pointer;transition:all .3s;text-align:center;margin-top:.5rem;
+}
+.btn-restart:hover{border-color:var(--gl);color:var(--gl);}
+/* ── GAME SCREEN ── */
+#screen-game{background:var(--bg);padding:0 0 3rem;}
+.game-inner{max-width:720px;margin:0 auto;padding:1.5rem 1.2rem;}
+.step-counter{font-size:.68rem;letter-spacing:.2em;color:var(--td);text-align:right;margin-bottom:1.2rem;}
+.scene-card{
+  border:1px solid var(--bdr);background:var(--bg2);
+  padding:1.8rem 2rem;margin-bottom:1.2rem;
+  position:relative;overflow:hidden;
+}
+.scene-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(180deg,#0a0303 0,#0a0303 18px,#160808 18px,#160808 20px);border-right:1px solid rgba(80,14,8,.5);}
+.scene-card::after{content:'';position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(180deg,#0a0303 0,#0a0303 18px,#160808 18px,#160808 20px);border-left:1px solid rgba(80,14,8,.5);}
+.scene-inner{padding:0 14px;}
+.scene-tag{font-size:.65rem;letter-spacing:.25em;color:var(--td);text-transform:uppercase;margin-bottom:.45rem;}
+.scene-title{font-size:1.1rem;color:var(--tb);letter-spacing:.1em;margin-bottom:.9rem;padding-bottom:.55rem;border-bottom:1px solid var(--bdr);}
+.scene-text{font-size:.9rem;line-height:2.05;color:var(--tx);}
+.scene-text p{margin-bottom:.7rem;}
+.scene-text em{color:var(--gl);font-style:normal;}
+.scene-text strong{color:var(--rl);}
+/* ── ENDING SCREEN ── */
+#screen-ending{background:var(--bg);padding:0 0 3rem;}
+.ending-inner{max-width:720px;margin:0 auto;padding:1.5rem 1.2rem;}
+.ending-card{border:1px solid var(--bdr);padding:2rem;margin-bottom:1rem;position:relative;overflow:hidden;}
+.ending-card.death{border-color:#7a1a1a;background:#120404;}
+.ending-card.stay{border-color:#6b5415;background:#0e0902;}
+.ending-card.ret{border-color:#3a6b30;background:#060a04;}
+.ending-tag{font-size:.68rem;letter-spacing:.35em;margin-bottom:.4rem;}
+.ending-card.death .ending-tag{color:var(--rl);}
+.ending-card.stay .ending-tag{color:var(--gl);}
+.ending-card.ret .ending-tag{color:#60a858;}
+.ending-title{font-size:1.22rem;letter-spacing:.1em;margin-bottom:1.1rem;}
+.ending-card.death .ending-title{color:#d46060;}
+.ending-card.stay .ending-title{color:#c09020;}
+.ending-card.ret .ending-title{color:#60a858;}
+.ending-text{font-size:.88rem;line-height:2.05;color:var(--tx);}
+.ending-text p{margin-bottom:.7rem;}
+.ending-proverb{font-size:1rem;letter-spacing:.22em;text-align:center;padding:.85rem;border-top:1px solid var(--bdr);margin-top:.8rem;}
+.ending-card.death .ending-proverb{color:var(--rl);}
+.ending-card.stay .ending-proverb{color:var(--gl);}
+.ending-card.ret .ending-proverb{color:#60a858;}
+.history-box{border:1px solid var(--bdr);background:var(--bg3);padding:1.2rem 1.5rem;margin-bottom:1rem;font-size:.8rem;line-height:1.95;color:var(--td);}
+.history-box h4{color:var(--gl);font-size:.75rem;letter-spacing:.15em;margin-bottom:.55rem;}
+/* ── AUDIO BTN ── */
+#audio-ctrl{position:fixed;bottom:1.2rem;right:1.2rem;z-index:999;background:var(--bg2);border:1px solid var(--bdr);color:var(--td);font-family:var(--font);font-size:.72rem;letter-spacing:.1em;padding:.4rem .7rem;cursor:pointer;transition:all .3s;}
+#audio-ctrl:hover{color:var(--gl);border-color:var(--gl);}
+/* ── FADE ── */
+.fade-in{animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .game-title-zh{font-size:2.2rem;}
+  .scene-card{padding:1.4rem 1.2rem;}
+  .scene-inner{padding:0 8px;}
+  .proverb-grid{padding:0 50px;}
+}
+</style>
+</head>
+<body>
+
+<button id="audio-ctrl" onclick="Audio.toggle()">♪ 音效</button>
+
+<!-- ══════════ INTRO SCREEN ══════════ -->
+<div id="screen-intro" class="screen active">
+  <div class="tile-band"></div>
+  <div class="intro-inner">
+
+    <div class="game-title-wrap">
+      <div class="game-eyebrow">19世紀中至20世紀初 · 金門 · 南洋</div>
+      <div class="game-title-zh">落　番</div>
+      <div class="game-title-py">Luò Fān</div>
+      <div class="game-tagline">一段下南洋的生死命運</div>
+    </div>
+
+    <!-- MAP SVG -->
+    <div class="map-wrap">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="金門至南洋航線圖" style="width:100%;max-width:600px;display:block;margin:0 auto;">
+        <defs>
+          <radialGradient id="gKinmen" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#b08030" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#b08030" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gNanyang" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#8c1a1a" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#8c1a1a" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="fglow">
+            <feGaussianBlur stdDeviation="2" result="b"/>
+            <feComposite in="SourceGraphic" in2="b" operator="over"/>
+          </filter>
+          <marker id="wake" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+            <path d="M0,0 L6,2 L0,4" fill="none" stroke="#b08030" stroke-width="0.8" opacity="0.7"/>
+          </marker>
+        </defs>
+
+        <!-- Background -->
+        <rect width="600" height="200" fill="#04080e"/>
+
+        <!-- Subtle sea texture lines -->
+        <line x1="0" y1="50" x2="600" y2="50" stroke="#060e18" stroke-width="8" opacity="0.6"/>
+        <line x1="0" y1="100" x2="600" y2="100" stroke="#060e18" stroke-width="6" opacity="0.5"/>
+        <line x1="0" y1="150" x2="600" y2="150" stroke="#060e18" stroke-width="8" opacity="0.6"/>
+        <!-- Fine wave lines -->
+        <path d="M0,40 Q75,36 150,40 Q225,44 300,40 Q375,36 450,40 Q525,44 600,40" fill="none" stroke="#0a1828" stroke-width="0.8" opacity="0.7"/>
+        <path d="M0,60 Q75,56 150,60 Q225,64 300,60 Q375,56 450,60 Q525,64 600,60" fill="none" stroke="#0a1828" stroke-width="0.8" opacity="0.7"/>
+        <path d="M0,80 Q75,76 150,80 Q225,84 300,80 Q375,76 450,80 Q525,84 600,80" fill="none" stroke="#0a1828" stroke-width="0.8" opacity="0.7"/>
+        <path d="M0,120 Q75,116 150,120 Q225,124 300,120 Q375,116 450,120 Q525,124 600,120" fill="none" stroke="#0a1828" stroke-width="0.8" opacity="0.7"/>
+        <path d="M0,140 Q75,136 150,140 Q225,144 300,140 Q375,136 450,140 Q525,144 600,140" fill="none" stroke="#0a1828" stroke-width="0.8" opacity="0.7"/>
+        <path d="M0,160 Q75,156 150,160 Q225,164 300,160 Q375,156 450,160 Q525,164 600,160" fill="none" stroke="#0a1828" stroke-width="0.8" opacity="0.7"/>
+
+        <!-- Glow halos -->
+        <circle cx="480" cy="100" r="60" fill="url(#gKinmen)"/>
+        <circle cx="120" cy="100" r="60" fill="url(#gNanyang)"/>
+
+        <!-- === ROUTE LINE === -->
+        <!-- Dashed gold route, slight arc downward (open sea feel) -->
+        <path d="M 460,100 C 420,118 360,122 300,118 C 240,114 180,112 140,100"
+          fill="none" stroke="#6a3a08" stroke-width="1.5" opacity="0.5"/>
+        <path d="M 460,100 C 420,118 360,122 300,118 C 240,114 180,112 140,100"
+          fill="none" stroke="#b08030" stroke-width="1.5" stroke-dasharray="12,7" opacity="0.85" filter="url(#fglow)"/>
+
+        <!-- === SHIP ICON (middle of route ~x=300,y=116) === -->
+        <g transform="translate(300,113) rotate(-5)">
+          <!-- Hull -->
+          <path d="M-22,6 Q-18,12 0,13 Q18,12 22,6 L18,4 Q0,8 -18,4 Z"
+            fill="#b08030" opacity="0.9"/>
+          <!-- Body -->
+          <rect x="-15" y="-2" width="30" height="8" rx="2" fill="#8a6020" opacity="0.9"/>
+          <!-- Mast -->
+          <line x1="0" y1="-2" x2="0" y2="-20" stroke="#c8a040" stroke-width="1.2" opacity="0.9"/>
+          <!-- Sail (main) -->
+          <path d="M 0,-19 L 14,-8 L 0,-3 Z" fill="#c4b090" opacity="0.75"/>
+          <!-- Sail (fore) -->
+          <path d="M 0,-14 L -10,-6 L 0,-3 Z" fill="#c4b090" opacity="0.55"/>
+          <!-- Boom -->
+          <line x1="-15" y1="2" x2="15" y2="2" stroke="#8a6020" stroke-width="0.8" opacity="0.7"/>
+          <!-- Wake lines behind ship -->
+          <path d="M 22,8 Q 32,6 42,9" fill="none" stroke="#b08030" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+          <path d="M 22,10 Q 32,10 42,12" fill="none" stroke="#b08030" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.3"/>
+        </g>
+
+        <!-- === 南洋 (destination, left) === -->
+        <!-- Pulsing ring -->
+        <circle cx="120" cy="100" r="18" fill="none" stroke="#8c1a1a" stroke-width="0.8" opacity="0.4"/>
+        <circle cx="120" cy="100" r="12" fill="none" stroke="#c03030" stroke-width="1" opacity="0.6"/>
+        <!-- Dot -->
+        <circle cx="120" cy="100" r="5" fill="#c03030" stroke="#e04040" stroke-width="1" opacity="0.95"/>
+        <!-- Label -->
+        <text x="120" y="78" fill="#d0a840" font-size="15" text-anchor="middle" font-family="Noto Serif TC,STSong,SimSun,serif" font-weight="bold" letter-spacing="2" opacity="0.95">南洋</text>
+        <text x="120" y="132" fill="#6a5030" font-size="8" text-anchor="middle" font-family="Georgia,serif" letter-spacing="1" opacity="0.6">Nanyang</text>
+
+        <!-- === 金門 (origin, right) === -->
+        <!-- Ring -->
+        <circle cx="480" cy="100" r="18" fill="none" stroke="#6a3808" stroke-width="0.8" opacity="0.4"/>
+        <circle cx="480" cy="100" r="12" fill="none" stroke="#b08030" stroke-width="1" opacity="0.55"/>
+        <!-- Dot -->
+        <circle cx="480" cy="100" r="5" fill="#b08030" stroke="#d0a840" stroke-width="1" opacity="0.95"/>
+        <!-- Label -->
+        <text x="480" y="78" fill="#d0a840" font-size="15" text-anchor="middle" font-family="Noto Serif TC,STSong,SimSun,serif" font-weight="bold" letter-spacing="2" opacity="0.95">金門</text>
+        <text x="480" y="132" fill="#6a5030" font-size="8" text-anchor="middle" font-family="Georgia,serif" letter-spacing="1" opacity="0.6">Kinmen</text>
+
+        <!-- Route label -->
+        <text x="300" y="158" fill="#4a3018" font-size="8" text-anchor="middle" font-family="Noto Serif TC,STSong,SimSun,serif" letter-spacing="3" opacity="0.55">落　番　航　線</text>
+
+      </svg>
+    </div>
+    <!-- PROVERB -->
+    <div class="proverb-wrap">
+      <div class="proverb-main">「六亡　三在　一回頭」</div>
+      <div class="proverb-grid">
+        <div class="pg-item"><div class="pg-num pg-death">六亡</div><div class="pg-label">命喪異鄉</div></div>
+        <div class="pg-item"><div class="pg-num pg-stay">三在</div><div class="pg-label">落地生根</div></div>
+        <div class="pg-item"><div class="pg-num pg-ret">一回頭</div><div class="pg-label">衣錦還鄉</div></div>
+      </div>
+    </div>
+
+    <div class="history-text">
+      <p>十九世紀中期至二十世紀初，金門地少人稠、戰亂頻仍，無數青年男丁被迫踏上黑水溝，輾轉前往廈門、廣州，再由此搭乘帆船或輪船南渡——史稱「<em>落番</em>」。</p>
+      <p>他們在新加坡河畔的<em>紅燈碼頭</em>卸貨扛包，以木籤計算勞資；蹲在<em>五腳基</em>的騎樓下，以一塊豆腐、幾口湯水度日。他們寄回的「<em>僑匯</em>」，養活了金門的妻兒，也砌起了至今仍矗立的一棟棟<em>洋樓</em>。</p>
+      <p>你，是金門少年<strong style="color:var(--gl)">陳阿水</strong>，即將踏上這段無法回頭的旅程。</p>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn-start" onclick="Game.start()">踏上命運之路 ──</button>
+  </div>
+  <div class="tile-band" style="margin-top:1.5rem;"></div>
+</div>
+
+<!-- ══════════ GAME SCREEN ══════════ -->
+<div id="screen-game" class="screen">
+  <div class="vignette"></div>
+  <div class="tile-band-sm"></div>
+  <div class="game-inner">
+    <div class="step-counter">◈ 步數 <span id="step-num">0</span></div>
+    <div id="scene-container" class="fade-in"></div>
+  </div>
+</div>
+
+<!-- ══════════ ENDING SCREEN ══════════ -->
+<div id="screen-ending" class="screen">
+  <div class="vignette"></div>
+  <div class="tile-band-sm"></div>
+  <div class="ending-inner">
+    <div id="ending-container" class="fade-in"></div>
+  </div>
+  <div class="tile-band-sm" style="margin-top:1.5rem;"></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   AUDIO ENGINE
+   （預留接口 — 替換 src 即可接入真實音效）
+   Ocean:  https://example.com/ocean.mp3
+   Market: https://example.com/market.mp3
+   Ambient:https://example.com/ambient.mp3
+════════════════════════════════════════ */
+const Audio = (() => {
+  /* Save the native HTMLAudio constructor before this variable shadows it */
+  const _A = window.Audio;
+
+  /* File paths (same folder as this HTML) */
+  const TRACKS = {
+    intro:  '遊戲主頁面開頭.mp3',
+    ocean:  '海浪聲.mp3',
+    market: '市場聲.mp3',
+    impact: '藥水倒下.mp3'
+  };
+
+  /* Map internal audio-type strings → track key + playback config */
+  const TYPE_CFG = {
+    ambient: { key: 'intro',  loop: true,  vol: 0.55 },
+    ocean:   { key: 'ocean',  loop: true,  vol: 0.60 },
+    market:  { key: 'market', loop: true,  vol: 0.55 },
+    bell:    { key: 'intro',  loop: true,  vol: 0.45 }, /* good/neutral endings */
+    impact:  { key: 'impact', loop: false, vol: 0.90 }  /* 六亡 / accident */
+  };
+
+  let bg    = null;   /* current looping background element */
+  let muted = false;
+
+  const stopBg = () => {
+    if (bg) { bg.pause(); bg.currentTime = 0; bg = null; }
+  };
+
+  /* Start a looping background track; skip if the same file is already running */
+  const playBg = (src, vol) => {
+    if (muted) return;
+    if (bg && bg._src === src && !bg.paused) return; /* already playing */
+    stopBg();
+    bg = new _A(src);
+    bg._src  = src;
+    bg.loop  = true;
+    bg.volume = vol;
+    bg.play().catch(() => {});
+  };
+
+  /* Play a one-shot clip (stops the background first) */
+  const playOnce = (src, vol) => {
+    if (muted) return;
+    stopBg();
+    const a = new _A(src);
+    a.volume = vol;
+    a.play().catch(() => {});
+  };
+
+  /* ── Public API ──────────────────────────────────────────────────────── */
+  return {
+
+    /* Called on first user interaction (title screen) */
+    playIntro() {
+      playBg(TRACKS.intro, 0.60);
+    },
+
+    /* Called by Game engine when Audio.init() fires and on every node */
+    init() {
+      playBg(TRACKS.intro, 0.55);
+    },
+
+    /* Called by renderNode with node.audio type string */
+    play(type) {
+      if (muted) return;
+      const cfg = TYPE_CFG[type] || TYPE_CFG.ambient;
+      if (cfg.loop) {
+        playBg(TRACKS[cfg.key], cfg.vol);
+      } else {
+        playOnce(TRACKS[cfg.key], cfg.vol);
+      }
+    },
+
+    toggle() {
+      muted = !muted;
+      document.getElementById('audio-ctrl').textContent = muted ? '♪ 靜音' : '♪ 音效';
+      if (muted) {
+        stopBg();
+      } else {
+        /* Resume title track when unmuting on intro screen; game will
+           override via play() as soon as the next node is rendered. */
+        playBg(TRACKS.intro, 0.60);
+      }
+      return muted;
+    },
+
+    stop:    stopBg,
+    _hasBg() { return !!bg; }
+  };
+})();
+
+/* ════════════════════════════════════════
+   STORY DATA
+════════════════════════════════════════ */
+const NODES = {
+
+  /* ── CHAPTER 1: DEPARTURE ── */
+  start: {
+    chapter: '第一章', title: '離鄉前夕',
+    audio: 'ambient',
+    text: [
+      '光緒年間，金門。',
+      '父親把你叫進廳堂，燈下的臉色比往常更沉重。「阿水，家裡的地越來越養不活人了。你大伯和三叔都在南洋，說那裡有活路。」',
+      '你才二十歲，妻子秀貞剛懷上孩子，父母年邁，家無餘糧。去「落番」——前往南洋——似乎是唯一的選擇。',
+      '但路途險惡，黑水溝的風浪吞過無數人。你必須決定如何出發。'
+    ],
+    choices: [
+      { key: 'A', label: '【經廈門中轉】', sub: '先到廈門找船行的熟人，再搭商船南下，風險稍低，但費時費錢。', next: 'xiamen_route' },
+      { key: 'B', label: '【從金門直接出海】', sub: '搭鄉里合夥包下的小帆船，更便宜，但要直渡黑水溝。', next: 'direct_route' }
+    ]
+  },
+
+  xiamen_route: {
+    chapter: '第一章', title: '廈門碼頭',
+    audio: 'ocean',
+    text: [
+      '你先渡過小金門海峽，抵達廈門。這裡比你想像的更嘈雜，操著閩南語、粵語、客家話的人潮擠滿了碼頭。',
+      '在船行裡，叔父的朋友幫你安排了一個位置。艙位很擠，但這是一艘有名號的商船，定期開往新加坡。',
+      '登船那天，你回頭望了一眼廈門的燈火。那一刻，你突然明白：秀貞腹中的孩子，你或許很久都見不到了。'
+    ],
+    choices: [
+      { key: 'A', label: '【買一艙等艙位】', sub: '多花一筆錢，條件稍好，染病機率較低。', next: 'good_voyage' },
+      { key: 'B', label: '【擠進統艙省錢】', sub: '艙底又悶又臭，幾十人擠在一起，是染病的溫床。', next: 'rough_voyage' }
+    ]
+  },
+
+  direct_route: {
+    chapter: '第一章', title: '黑水溝',
+    audio: 'ocean',
+    text: [
+      '帆船離開金門的那個夜晚，風浪比任何人預期的都要大。',
+      '金門的海民都知道「黑水溝」的凶名——那是台灣海峽南端的惡水，洋流交匯，暗礁無數。船上的阿伯說：「每年都有船在這裡不見。」',
+      '你緊握著秀貞為你縫的護身符，望著漆黑的海面，心跳的聲音幾乎蓋過了風聲。'
+    ],
+    choices: [
+      { key: 'A', label: '【上甲板拉繩協助】', sub: '幫助水手穩住帆繩，精力大量消耗，但展現了你的勇氣。', next: 'good_voyage' },
+      { key: 'B', label: '【留在艙底祈禱】', sub: '艙底潮濕，不少人暈船嘔吐，疾病在此蔓延。', next: 'rough_voyage' }
+    ]
+  },
+
+  good_voyage: {
+    chapter: '第一章', title: '南中國海',
+    audio: 'ocean',
+    text: [
+      '海上的日子難熬，但你撐過來了。',
+      '船過越南海岸的那一夜，你第一次看到了南方天空的繁星——那麼密，那麼亮，像是用來補償這段旅程的苦楚。',
+      '三十幾天後，船緩緩駛入新加坡海峽。岸上是熱帶叢林的氣息，混合著魚腥味和香料味。有人說：「到了，到了！」',
+      '你站在船頭，看著那片從未見過的土地，心中是說不清的複雜滋味。'
+    ],
+    choices: [
+      { key: 'A', label: '【前往金門會館】', sub: '聽說新加坡有金門同鄉會，先去找同鄉摸清情況。', next: 'clan_house' },
+      { key: 'B', label: '【直奔紅燈碼頭找活幹】', sub: '聽說紅燈碼頭每天都需要苦力，先解決溫飽再說。', next: 'dock_first' }
+    ]
+  },
+
+  rough_voyage: {
+    chapter: '第一章', title: '艙底的病氣',
+    audio: 'ocean',
+    text: [
+      '第十天，艙底開始有人發燒。',
+      '那種熱，不像普通的暑熱，是帶著發抖的燒。你的鄰鋪老謝第一個倒下了，第三天，他就被裹著草蓆從船舷扔進了海裡。',
+      '沒有儀式，沒有棺木。海水就是他的墓。',
+      '你開始覺得頭暈，喉嚨也開始痛。'
+    ],
+    choices: [
+      { key: 'A', label: '【花光積蓄買藥』', sub: '你把帶來的銀元幾乎全花在藥上，燒雖然退了，但抵達新加坡時你已身無分文。', next: 'arrive_broke' },
+      { key: 'B', label: '【硬撐不吃藥】', sub: '你覺得自己年輕，或許能撐過去。但船上的風寒不是一般的病。', next: 'end_sea_death' }
+    ]
+  },
+
+  arrive_broke: {
+    chapter: '第二章', title: '身無分文的到來',
+    audio: 'market',
+    text: [
+      '你靠在船舷，望著新加坡的岸線，口袋幾乎空了。',
+      '「怎麼了，阿兄？」旁邊的人問你。你搖搖頭，沒有回答。你知道從這一刻起，你沒有任何退路，必須立刻找到活做。',
+      '碼頭的苦力包頭一眼就看出你的狼狽，但依然拋來一個眼神：「能搬貨嗎？」'
+    ],
+    choices: [
+      { key: 'A', label: '【答應去搬貨】', sub: '先做苦力，沒有選擇。', next: 'dock_first' },
+      { key: 'B', label: '【先去找金門同鄉』', sub: '就算身無分文，同鄉或許能幫你。', next: 'clan_house' }
+    ]
+  },
+
+  /* ── CHAPTER 2: LABORER ── */
+  clan_house: {
+    chapter: '第二章', title: '金門會館',
+    audio: 'ambient',
+    text: [
+      '金門會館設在牛車水旁邊的一棟老店屋裡，外牆貼著熟悉的閩南磚紅。',
+      '館長是個五十多歲的老人，說一口金門腔的閩南話，讓你一瞬間鼻子發酸。他給你安排了一個棚鋪，借你幾天的餐食，讓你先緩口氣。',
+      '「你讀過書嗎？」他問你。你說在金門私塾讀過幾年。',
+      '他沉吟一下：「我認識德成行的老闆，那是金門人開的貿易行。他缺一個會算帳的學徒。但若你急需現錢，碼頭的活月結。」'
+    ],
+    choices: [
+      { key: 'A', label: '【去德成行當學徒】', sub: '薪水少但有前途，而且躲開了碼頭的危險。', next: 'trade_house' },
+      { key: 'B', label: '【先去碼頭做苦力賺現錢】', sub: '每天都有收入，但工作危險且辛苦。', next: 'dock_life' }
+    ]
+  },
+
+  dock_first: {
+    chapter: '第二章', title: '紅燈碼頭',
+    audio: 'market',
+    text: [
+      '新加坡河的紅燈碼頭永遠不缺活做，也永遠不缺人。',
+      '你加入了扛包隊伍。包頭扔給你一堆木籤，說：「搬一件貨，換一支籤，晚上來換錢。」',
+      '你就這樣開始了。背包、扛米、搬木材、卸鐵桶。汗水把衣服濕透，肩膀磨破皮，腳踝在碼頭的石縫裡扭傷了兩次。',
+      '夜裡，你蹲在五腳基的騎樓下，就著一塊豆腐和湯水吃飯，然後倒在草蓆上，幾乎沒有力氣想念秀貞。',
+      '但你每天都在數籤，每天都在存錢。'
+    ],
+    choices: [
+      { key: 'A', label: '【繼續踏實工作】', sub: '慢慢積累，不貪圖捷徑。', next: 'dock_life' },
+      { key: 'B', label: '【去找金門會館，看有沒有更好的機會】', sub: '先打聽打聽，或許有出路。', next: 'clan_house' }
+    ]
+  },
+
+  dock_life: {
+    chapter: '第二章', title: '五腳基的日子',
+    audio: 'market',
+    text: [
+      '碼頭的苦力日子像陀螺——一旦轉起來就停不下來。',
+      '你慢慢熟悉了這裡的規矩：要和包頭搞好關係，要對同鄉講義氣，不要碰賭桌，更不能碰那管甜甜的鴉片菸管——那東西吃掉過太多人。',
+      '某天下午，碼頭在卸一批礦坑用的化學藥劑。工頭說要小心搬。你旁邊的阿金——一個廣東仔——腳一滑，一桶藥劑傾倒，眼看就要砸向他。',
+      '你只有一秒鐘做決定。'
+    ],
+    choices: [
+      { key: 'A', label: '【奮力推開阿金】', sub: '你推開了他，自己被藥劑濺到膝蓋，腐蝕了一大塊皮肉。', next: 'injured_hero' },
+      { key: 'B', label: '【本能地跳開】', sub: '你保住了自己，但阿金的腿被砸傷。你在同鄉間的名聲從此有了一道裂縫。', next: 'dock_save' }
+    ]
+  },
+
+  injured_hero: {
+    chapter: '第二章', title: '傷口與書法',
+    audio: 'ambient',
+    text: [
+      '膝蓋的傷讓你躺了兩個月，無法工作。',
+      '金門同鄉幫你付了醫館的費用，阿金的家人每天送湯。但你知道，存款正在一點一點消耗。',
+      '夜裡最難熬。傷口痛，鄉愁也痛。你摸出秀貞幫你縫進包裡的一小捆毛筆，就著昏黃的油燈，開始抄寫記憶中的白居易：',
+      '「離離原上草，一歲一枯榮……」',
+      '你在南洋的漫長等待中，靠這些字，沒有失去自己。傷癒後，你在碼頭的地位反而更高了——大家說你是「有情義的人」。'
+    ],
+    choices: [
+      { key: 'A', label: '【繼續在碼頭積累，再謀出路】', sub: '你的名聲讓你開始帶新來的苦力，收入稍增。', next: 'dock_save' },
+      { key: 'B', label: '【趁機去德成行求職】', sub: '你的聲名傳到了金門會館，有人願意引薦你去貿易行。', next: 'trade_house' }
+    ]
+  },
+
+  dock_save: {
+    chapter: '第二章', title: '積蓄漸豐',
+    audio: 'ambient',
+    text: [
+      '三年過去了。',
+      '你的肩膀比在金門時寬了一倍，手掌布滿了老繭。你的閩南話夾雜了廣東腔，偶爾還會冒出幾個英語單字。',
+      '你已經積存了一筆可觀的錢，托人帶回去的僑匯讓父母少受了不少苦。秀貞生下了兒子，你從未見過他，只從信裡知道他叫「思番」——思念落番父親的意思。',
+      '某天，同鄉老林問你：「阿水，你打算在這裡待多久？」你沉默了很久。'
+    ],
+    choices: [
+      { key: 'A', label: '【現在就回金門】', sub: '雖然還沒富起來，但思念讓你想回家。', next: 'plague_letter' },
+      { key: 'B', label: '【再撐幾年，等存夠錢再說】', sub: '你想要蓋一棟洋樓，讓父母過好日子。', next: 'crossroads' }
+    ]
+  },
+
+  trade_house: {
+    chapter: '第二章', title: '德成行',
+    audio: 'ambient',
+    text: [
+      '德成行的老闆是金門珠山人，在南洋打拚了三十年。他給你一張算盤，說：「先算這批貨的帳。」',
+      '你在私塾學的算術派上用場了。老闆看你一眼，點了點頭。',
+      '往後幾年，你從學徒做到帳房，再到副掌櫃。你學了英語、馬來語，學會和印度商人、英國官員周旋。穿著從草鞋換成了皮鞋，住處從五腳基的草蓆換成了店屋的房間。',
+      '你的僑匯一年比一年多。但你離回家的日子，似乎也越來越遠。'
+    ],
+    choices: [
+      { key: 'A', label: '【此時回金門，衣錦可以還鄉】', sub: '你已有足夠的資本，也有名望，回鄉的時機成熟了。', next: 'plague_letter' },
+      { key: 'B', label: '【在南洋繼續擴張事業】', sub: '老闆有意讓你接手部分業務，更大的財富在眼前。', next: 'crossroads' }
+    ]
+  },
+
+  /* ── CHAPTER 3: CROSSROADS ── */
+  crossroads: {
+    chapter: '第三章', title: '人生的分叉',
+    audio: 'ambient',
+    text: [
+      '南洋的第八年，老林跟你說：「你有沒有想過，在這裡安個家？」',
+      '你愣了一下。',
+      '「你的秀貞在金門等你，思番也大了。但這裡的生活……」他搖搖頭，不說下去。',
+      '你知道他沒說完的話。這裡有金門帶不走的東西：南洋的氣候、娘惹料理的香氣、每天都在增長的機會，還有——你早已習慣的孤獨。',
+      '這一夜，你在店屋的窗前坐了很久，想著要做什麼決定。'
+    ],
+    choices: [
+      { key: 'A', label: '【決定回金門，落葉歸根】', sub: '帶著這些年的積蓄，踏上回家的路。', next: 'plague_letter' },
+      { key: 'B', label: '【在南洋另立家室，落地生根】', sub: '你認識了一位娘惹女子阿蓮，在南洋開始新的生活。', next: 'local_marriage' }
+    ]
+  },
+
+  plague_letter: {
+    chapter: '第三章', title: '家書',
+    audio: 'ambient',
+    text: [
+      '你正在收拾行李準備買船票，一封信到了。',
+      '是金門寄來的。你看到信封就知道不對——金門人寫信向來節省，這封信卻厚得異常。',
+      '「阿水，家裡出了大事。今年鼠疫蔓延，珠山、山後死了許多人。秀貞……秀貞在三月走了。孩子思番被你大伯帶走養著。父親還在，但已臥病……」',
+      '你看完信，坐在那裡，很久沒有動。'
+    ],
+    choices: [
+      { key: 'A', label: '【立刻啟程回金門】', sub: '就算帶著悲傷，你要親自回去見父親，見思番。', next: 'end_return_grief' },
+      { key: 'B', label: '【繼續在南洋工作，寄錢回家才是盡孝】', sub: '你強忍悲痛，在南洋再打拚幾年，讓思番有最好的條件。', next: 'local_marriage' }
+    ]
+  },
+
+  local_marriage: {
+    chapter: '第三章', title: '落地生根',
+    audio: 'ambient',
+    text: [
+      '你在新加坡牛車水旁邊的一棟店屋裡成了家。',
+      '阿蓮是土生華人，閩南話說得比你還流利，但從不去過金門。你們生了幾個孩子，有的後來去讀了英文學校，說話帶著英國腔。',
+      '你仍然每個月寄僑匯回金門，讓思番讀書，讓老父有藥錢。金門的族譜上，你的名字旁邊有一行小字：「落番南洋，在南洋另立戶。」',
+      '某年，你出錢讓金門的老家翻修了老屋，算是了了一個心願。',
+      '你老的時候，孫子問你：「阿公，金門是什麼樣的？」你想了很久，說：「像夢裡的地方。」'
+    ],
+    choices: [
+      { key: 'A', label: '【這就是我的命運——三在】', sub: '在南洋終老，家族在此落地生根。', next: 'end_stay_family' },
+      { key: 'B', label: '【晚年決定回金門看一眼】', sub: '臨終前，你想回去看看金門的土地。', next: 'end_stay_return' }
+    ]
+  },
+
+  /* ══════════ ENDINGS ══════════ */
+  end_sea_death: {
+    isEnding: true, endType: 'death',
+    tag: '結局：六亡',
+    title: '黑水溝——此生未到南洋',
+    audio: 'impact',
+    text: [
+      '燒沒有退。',
+      '第十五天，你已無法站起來。船艙裡有人在幫你擦臉，你聽到有人在說：「這個年輕人不行了。」',
+      '你想起秀貞，想起那個你從未見過臉的孩子，想起金門的老父。',
+      '夜裡，你在半清醒中感覺到有人把你抬起來。然後是一陣風，海水的腥味撲面而來，然後是無盡的黑暗。',
+      '船繼續南行，留下了一片浪花。沒有墓碑，沒有名字，只有家鄉永遠等不到回音的信件。'
+    ],
+    proverb: '十去，⟦六亡⟧，三在，一回頭',
+    history: '在19世紀末至20世紀初，前往南洋的「出洋客」中，死於途中的比例極高。黑水溝（台灣海峽南段）的風浪、艙底的傳染病（霍亂、瘧疾）以及船難，是主要死因。許多人甚至沒有抵達目的地，便葬身海底。金門的「番仔墓」中，有許多只立著空的招魂碑，因為遺體從未被尋回。'
+  },
+
+  end_stay_family: {
+    isEnding: true, endType: 'stay',
+    tag: '結局：三在',
+    title: '落地生根——新加坡是第二個故鄉',
+    audio: 'bell',
+    text: [
+      '你最後的日子在牛車水的店屋裡度過。子孫四代，有的說英語、馬來語，有的還能說幾句閩南話。',
+      '你出錢在金門蓋的那棟洋樓，後來成了村裡的地標。族譜上記著你的名字，旁邊注著：「落番，南洋功成，捐資建洋樓，卒於星洲。」',
+      '你一生寄出的僑匯，折算起來足以買下金門好幾畝地。你從未辜負過家人，只是再也沒有親自踏上金門的土地。',
+      '臨終前，孫子問你想不想回金門。你搖搖頭，笑著說：「我的根已經長在這裡了。」'
+    ],
+    proverb: '十去，六亡，⟦三在⟧，一回頭',
+    history: '「三在」是落番者最普遍的命運。許多在南洋落地生根的金門人建立了緊密的同鄉社群，長期透過「僑匯」支持家鄉發展。新加坡的金門會館（Kinmen Koo Clan Association）至今仍存在，是保存落番歷史最完整的海外社群之一。'
+  },
+
+  end_stay_return: {
+    isEnding: true, endType: 'stay',
+    tag: '結局：三在・終歸一瞥',
+    title: '暮年踏上故土——夢中的金門',
+    audio: 'bell',
+    text: [
+      '你八十多歲了，孫子陪你搭船回金門。',
+      '站在碼頭上，你認出了海的顏色，卻認不出半個熟悉的臉。老家的院子長滿了野草，洋樓的牆上爬滿了蔓藤，那是用你的僑匯蓋的，現在已沒有人住。',
+      '你在老家的院子裡坐了一個下午，一句話都沒說。',
+      '孫子問你在想什麼，你說：「我在想，那個當年走出這扇門的少年。」',
+      '回新加坡後，你再也沒提過回金門的事。幾年後，你在子孫的陪伴下，平靜地走了。'
+    ],
+    proverb: '十去，六亡，⟦三在⟧，一回頭',
+    history: '許多在南洋終老的金門人，一生只回過故鄉一兩次，或甚至從未回去。「落葉歸根」的渴望與現實的羈絆之間的拉扯，是貫穿整個落番移民史的永恆主題。'
+  },
+
+  end_return_grief: {
+    isEnding: true, endType: 'ret',
+    tag: '結局：一回頭（帶淚的歸途）',
+    title: '衣錦還鄉——洋樓下的哀傷',
+    audio: 'bell',
+    text: [
+      '你終於回來了，帶著整整十年的積蓄。',
+      '但秀貞不在了。思番看著你，用一個陌生的眼神叫了一聲「爸爸」，你的眼眶就紅了。',
+      '你用帶回來的錢，在金門蓋起了一棟兩層的閩南洋樓——白牆、燕尾脊、南洋帶來的彩色玻璃窗。那是你給秀貞的，雖然她再也看不到了。',
+      '落成那天，整個村子擺了三十桌流水席。父親坐在上首，眼睛渾濁了，卻一直看著你，不說話。',
+      '你明白那是什麼意思。',
+      '你回來了。但你帶走的那個少年，你帶走的那段青春，你錯過的那些歲月——那些，回不來了。'
+    ],
+    proverb: '十去，六亡，三在，⟦一回頭⟧',
+    history: '史料記載，金門知名「落番」歸鄉者如珠山村呂慶安、水頭村的黃輝煌等，均在南洋累積財富後返鄉興建洋樓，成為金門建築遺產的重要組成部分。然而，20世紀初鼠疫的肆虐（1902-1921年間金門多次爆發大規模鼠疫），常讓返鄉者面對天人永隔之痛。'
+  }
+};
+
+/* ════════════════════════════════════════
+   GAME ENGINE
+════════════════════════════════════════ */
+const Game = (() => {
+  let currentNodeId = 'start';
+  let stepCount = 0;
+
+  const screens = {
+    intro: document.getElementById('screen-intro'),
+    game:  document.getElementById('screen-game'),
+    ending:document.getElementById('screen-ending')
+  };
+
+  const showScreen = (name) => {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  const fmt = (txt) => {
+    // Process inline markup
+    return txt
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\[(.+?)\]/g, '<em>$1</em>');
+  };
+
+  const renderNode = (nodeId) => {
+    const node = NODES[nodeId];
+    if (!node) return;
+    currentNodeId = nodeId;
+
+    Audio.play(node.audio || 'ambient');
+
+    if (node.isEnding) {
+      renderEnding(node);
+      return;
+    }
+
+    stepCount++;
+    document.getElementById('step-num').textContent = stepCount - 1;
+
+    const container = document.getElementById('scene-container');
+    container.classList.remove('fade-in');
+    void container.offsetWidth;
+    container.classList.add('fade-in');
+
+    const choicesHTML = node.choices.map(c => `
+      <button class="btn-choice" onclick="Game.go('${c.next}')">
+        <span class="choice-key">${esc(c.key)}</span>
+        <span>
+          <strong>${esc(c.label)}</strong>
+          <span class="choice-sub">${esc(c.sub)}</span>
+        </span>
+      </button>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="scene-card">
+        <div class="scene-inner">
+          <div class="scene-tag">${esc(node.chapter)}</div>
+          <div class="scene-title">${esc(node.title)}</div>
+          <div class="scene-text">
+            ${node.text.map(p => `<p>${fmt(esc(p))}</p>`).join('')}
+          </div>
+        </div>
+      </div>
+      ${choicesHTML}
+    `;
+
+    showScreen('game');
+  };
+
+  const hlProverb = (s, type) => {
+    const colors = { death: '#c03030', stay: '#b08030', ret: '#60a858' };
+    const col = colors[type] || '#b08030';
+    return s.replace(/⟦([^⟧]+)⟧/g, `<strong style="font-size:1.12em;color:${col}">$1</strong>`);
+  };
+
+  const renderEnding = (node) => {
+    const container = document.getElementById('ending-container');
+    container.classList.remove('fade-in');
+    void container.offsetWidth;
+    container.classList.add('fade-in');
+
+    container.innerHTML = `
+      <div class="tile-band-sm" style="margin-bottom:1.2rem;"></div>
+      <div class="ending-card ${node.endType}">
+        <div class="ending-tag">【${esc(node.tag)}】</div>
+        <div class="ending-title">${esc(node.title)}</div>
+        <div class="ending-text">
+          ${node.text.map(p => `<p>${esc(p)}</p>`).join('')}
+        </div>
+        <div class="ending-proverb">${hlProverb(esc(node.proverb), node.endType)}</div>
+      </div>
+      <div class="history-box">
+        <h4>▌ 歷史脈絡</h4>
+        ${esc(node.history)}
+      </div>
+      <div class="tile-band-sm" style="margin-bottom:.8rem;"></div>
+      <button class="btn-restart" onclick="Game.restart()">← 重回金門（重新開始）</button>
+    `;
+
+    showScreen('ending');
+  };
+
+  /* ── Auto-start intro music ─────────────────────────────────────────
+     Try immediately (works for local file:// and permissive browsers).
+     If the browser blocks autoplay, fall back to first user interaction. */
+  (function tryAutoplay() {
+    const attempt = () => Audio.playIntro();
+    /* Try on DOMContentLoaded (or right now if already loaded) */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attempt, { once: true });
+    } else {
+      attempt();
+    }
+    /* Fallback: if Audio.bg is still null after load, play on first touch */
+    window.addEventListener('load', function() {
+      if (!Audio._hasBg()) {
+        document.addEventListener('click', function _boot() {
+          Audio.playIntro();
+          document.removeEventListener('click', _boot);
+        }, { once: true });
+      }
+    }, { once: true });
+  })();
+
+  return {
+    start() {
+      Audio.init();
+      stepCount = 0;
+      renderNode('start');
+    },
+    go(nodeId) {
+      renderNode(nodeId);
+    },
+    restart() {
+      Audio.stop();
+      stepCount = 0;
+      showScreen('intro');
+    }
+  };
+})();
+</script>
+</body>
+</html>
